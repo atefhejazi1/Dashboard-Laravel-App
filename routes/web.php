@@ -30,6 +30,8 @@ require __DIR__ . '/auth.php';
 
 Route::prefix('blogs')->middleware(['auth'])->group(function () {
     Route::get('/all', [BlogController::class, 'index']);
+    Route::get('/add', [BlogController::class, 'create']);
+    Route::post('/store', [BlogController::class, 'store']);
 });
 
 // Route::get('blogs/all', function () {

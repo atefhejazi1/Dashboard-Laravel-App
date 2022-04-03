@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
-use App\Http\Requests\StoreBlogRequest;
-use App\Http\Requests\UpdateBlogRequest;
+use Illuminate\Http\Request;
 
 class BlogController extends Controller
 {
@@ -15,8 +14,8 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $aaaa = Blog::all();
-        return view('blogs.allBlogs', compact('aaaa'));
+        $blogs = Blog::all();
+        return view('blogs.allBlogs', compact('blogs'));
     }
 
     /**
@@ -26,18 +25,33 @@ class BlogController extends Controller
      */
     public function create()
     {
-        //
+        return view('blogs.addBlog');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreBlogRequest  $request
+     * @param   \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreBlogRequest $request)
+    public function store(Request $request)
     {
-        //
+        $file_extention = $request->blogPhoto->getClientOriginalExtension();
+        $file_name = time() . '.' . $file_extention;
+        $path = 'images/blogs';
+
+        $request->blogPhoto->move($path, $file_name);
+
+
+        $blog = new Blog();
+        $blog->name = $request->name;
+        $blog->description = $request->description;
+        $blog->blogPhoto = $file_name;
+        $blog->id_dept = $request->id_dept;
+
+        $blog->save();
+
+        return redirect('blogs/all');
     }
 
     /**

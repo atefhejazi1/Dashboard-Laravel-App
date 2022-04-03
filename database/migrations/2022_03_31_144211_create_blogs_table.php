@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string("name");
             $table->longText("description");
+            $table->string('blogPhoto', 600);
             $table->unsignedBigInteger('id_dept');
             $table->foreign('id_dept')->references('id')->on('departments');
             $table->timestamps();
