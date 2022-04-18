@@ -21,8 +21,9 @@
 
     <div class="mb-2">
         <select name="id_dept">
-            <option value="1"> war</option>
-            <option value="2"> wather</option>
+            @foreach($departments as $department)
+            <option value={{$department->id}}> {{$department->name}}</option>
+            @endforeach
         </select>
     </div>
 

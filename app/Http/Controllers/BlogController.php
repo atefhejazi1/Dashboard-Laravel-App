@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\Models\Department;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BlogController extends Controller
 {
@@ -18,6 +20,13 @@ class BlogController extends Controller
         return view('blogs.allBlogs', compact('blogs'));
     }
 
+
+    public function allBlog()
+    {
+        $blogs = Blog::all();
+        return view('welcome', compact('blogs'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -25,7 +34,8 @@ class BlogController extends Controller
      */
     public function create()
     {
-        return view('blogs.addBlog');
+        $departments = Department::all();
+        return view('blogs.addBlog', compact('departments'));
     }
 
     /**
@@ -38,10 +48,10 @@ class BlogController extends Controller
     {
         $file_extention = $request->blogPhoto->getClientOriginalExtension();
         $file_name = time() . '.' . $file_extention;
+
         $path = 'images/blogs';
 
         $request->blogPhoto->move($path, $file_name);
-
 
         $blog = new Blog();
         $blog->name = $request->name;
@@ -83,7 +93,7 @@ class BlogController extends Controller
      * @param  \App\Models\Blog  $blog
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateBlogRequest $request, Blog $blog)
+    public function update(Request $request, Blog $blog)
     {
         //
     }
